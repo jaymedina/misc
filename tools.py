@@ -5,8 +5,7 @@ from astropy.io import fits
 
 
 def bpix_image(bpixtab, path='/grp/hst/wfc3j/jmedina/bpixtab_test/'):
-  """
-  This function takes a UVIS bad pixel table and turns it into an image.
+  """ This function takes a UVIS bad pixel table and turns it into an image.
 
   Parameter(s)
   ------------
@@ -60,6 +59,7 @@ def make_fits(array, filename, path=''):
     path : str
         The path where you want to save your array.
     """
+
     hdu0 = fits.PrimaryHDU([])
     hdu1 = fits.ImageHDU([array])
 
@@ -67,6 +67,6 @@ def make_fits(array, filename, path=''):
 
     if path=='':
         path = os.getcwd()
-        hdulist.writeto(path+filename+'.fits')
+        hdulist.writeto(path+filename+'.fits', overwrite=False)
     else:
-        hdulist.writeto(path+filename+'.fits')
+        hdulist.writeto(path+filename+'.fits', overwrite=False)
