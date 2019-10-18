@@ -70,3 +70,29 @@ def make_fits(array, filename, path=''):
         hdulist.writeto(path+filename+'.fits', overwrite=False)
     else:
         hdulist.writeto(path+filename+'.fits', overwrite=False)
+
+def group_visits(wdir):
+    """ Organizes the files in your working directory based on visit number.
+    Generates a dictionary that sorts the files based on visit number.
+
+    Parameters
+    ---------
+    wdir : str
+        Your working directory
+
+    Returns
+    -------
+    group : dict
+        A dictionary whose keywords are the visit numbers, and the keyword values
+        are the lists of files generated from that visit.
+    """
+    all_files = glob(os.path.join(wdir, '*flc.fits'))
+    group = dict()
+    for file in all_files:
+        visit = fits.getheader(file)['LINENUM'].split('.')[0]
+        if visit not in group:
+            group[str(visit)] = [str(file)]
+        elif visit in group:
+            group[str(visit)].append(str(file))
+
+    return group
