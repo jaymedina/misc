@@ -44,7 +44,7 @@ def bpix_image(bpixtab, path='/grp/hst/wfc3j/jmedina/bpixtab_test/'):
   hdulist = fits.HDUList([hdu0, hdu1, hdu2])
 
   rootname = bpixtab.split('_')[0]
-  hdulist.writeto(path+rootname+'_img.fits', overwrite=False)
+  hdulist.writeto(os.path.join(path, rootname+'_img.fits'), overwrite=False)
 
 def make_fits(array, filename, path=''):
     """ This function will put your array in a FITS file that you can open in
