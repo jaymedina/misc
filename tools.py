@@ -1,3 +1,10 @@
+"""
+Functions in this module:
+*bpix_image()
+*make_fits()
+*group_visits()
+*get_slope
+"""
 import numpy as np
 import os
 
@@ -45,6 +52,10 @@ def bpix_image(bpixtab, path='/grp/hst/wfc3j/jmedina/bpixtab_test/'):
 
   rootname = bpixtab.split('_')[0]
   hdulist.writeto(os.path.join(path, rootname+'_img.fits'), overwrite=False)
+  print('New file created!')
+  print('View it by entering `ds9 {}/{}` in a fresh terminal.'.format(\
+                                                            path, \
+                                                            rootname'_img.fits'))
 
 def make_fits(array, filename, path=''):
     """ This function will put your array in a FITS file that you can open in
@@ -96,3 +107,33 @@ def group_visits(wdir):
             group[str(visit)].append(str(file))
 
     return group
+
+def get_slope(x, y, deg=1, err=[]):
+    """ Calculate the slope of the polynomial that best fits your data.
+
+    Parameters
+    ----------
+    x : arr, list
+    y : arr, list
+    deg : int
+        The degree of your polynomial fit (default is deg=1, i.e. a line)
+
+    Returns
+    -------
+    z and p
+
+    """
+    inverse_error = []
+    for i in err:
+        inv = 1/i
+        inverse_error.append(i)
+
+    if len(err)>0:
+        z = np.polyfit(x, y, deg, w=inverse_error)
+    else:
+        z = np.polyfit(x, y, deg)
+
+    m, b = z
+    p = np.poly1d(z)
+
+    return m, b, p

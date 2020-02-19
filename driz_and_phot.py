@@ -1,6 +1,11 @@
 """ Drizzle and photometry tools (wrappers) used for the WFC3/UVIS
 time-dependent zeropoint calculations.
 
+Functions
+---------
+- drizzle
+- get_fluxes
+
 Author(s)
 ---------
 Jennifer V. Medina (2019)
@@ -141,7 +146,7 @@ def get_fluxes(file_list, filt, targ, chip, fwhm=1.675, threshold=1000):
         filenames.append(file)
         if 'flc.fits' in file:
             fluxes.append(phot_tbl['flux'][0]/exptime)
-            #fluxes.append(phot_tbl['flux'][0])
+
         else:
             fluxes.append(phot_tbl['flux'][0])
 
