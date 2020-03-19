@@ -10,6 +10,32 @@ import os
 
 from astropy.io import fits
 
+def bpix_kw(bpixtab):
+    """ This function prints out header keywords as part of BPIXTAB verification
+    procedure.
+
+    Parameter(s)
+    ------------
+    bpixtab : str
+      The bad pixel table you want to turn into an image.
+      Format: `[filename]_bpx.fits` or `path/to/[filename]_bpx.fits`
+
+    """
+    print('Verifying the header keywords of UVIS bad pixel table {}...'.format(bpixtab))
+    print('USEAFTER:')
+    print(fits.getheader(bpixtab)['USEAFTER'])
+    print(' ')
+    print('PEDIGREE:')
+    print(fits.getheader(bpixtab)['PEDIGREE'])
+    print(' ')
+    print('DESCRIP:')
+    print(fits.getheader(bpixtab)['DESCRIP'])
+    print(' ')
+    print('COMMENT:')
+    print(fits.getheader(bpixtab)['COMMENT'])
+    print(' ')
+    print('HISTORY:')
+    print(fits.getheader(bpixtab)['HISTORY'])
 
 def bpix_image(bpixtab, path='/grp/hst/wfc3j/jmedina/bpixtab_test/'):
   """ This function takes a UVIS bad pixel table and turns it into an image.
@@ -18,7 +44,7 @@ def bpix_image(bpixtab, path='/grp/hst/wfc3j/jmedina/bpixtab_test/'):
   ------------
   bpixtab : str
     The bad pixel table you want to turn into an image.
-    Format: `[filename]_bpx.fits`
+    Format: `[filename]_bpx.fits` or `path/to/[filename]_bpx.fits`
 
   Returns
   -------
@@ -52,12 +78,32 @@ def bpix_image(bpixtab, path='/grp/hst/wfc3j/jmedina/bpixtab_test/'):
 
   if '/' in bpixtab:
       bpixtab = bpixtab.split('/')[-1]
+
   rootname = bpixtab.split('_')[0]
   hdulist.writeto(os.path.join(path, rootname+'_img.fits'), overwrite=False)
   print('New file created!')
   print('View it by entering `ds9 {}{}` in a fresh terminal.'.format(\
                                                             path, \
                                                             rootname+'_img.fits'))
+
+def bpixtab_test(bpixtab, path='/grp/hst/wfc3j/jmedina/bpixtab_test/'):
+    """ The main function for the UVIS bad pixel table verification procedure.
+    It wraps the following functions:
+    *bpix_kw
+    *bpix_image
+
+    Parameter(s)
+    ------------
+    bpixtab : str
+      The bad pixel table you want to turn into an image.
+      Format: `[filename]_bpx.fits` or `path/to/[filename]_bpx.fits`
+    """
+    # Verifying the header keywords
+    bpix_kw(bpixtab)
+
+    # Generating an image of the bad pixels using the bad pixel table
+    # which can be inspected using DS9
+    bpix_image(bpixtab, path) # uses default path
 
 def make_fits(array, filename, path=''):
     """ This function will put your array in a FITS file that you can open in
