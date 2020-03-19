@@ -50,6 +50,8 @@ def bpix_image(bpixtab, path='/grp/hst/wfc3j/jmedina/bpixtab_test/'):
 
   hdulist = fits.HDUList([hdu0, hdu1, hdu2])
 
+  if '/' in bpixtab:
+      bpixtab = bpixtab.split('/')[-1]
   rootname = bpixtab.split('_')[0]
   hdulist.writeto(os.path.join(path, rootname+'_img.fits'), overwrite=False)
   print('New file created!')
