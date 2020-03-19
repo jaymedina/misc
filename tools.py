@@ -53,9 +53,9 @@ def bpix_image(bpixtab, path='/grp/hst/wfc3j/jmedina/bpixtab_test/'):
   rootname = bpixtab.split('_')[0]
   hdulist.writeto(os.path.join(path, rootname+'_img.fits'), overwrite=False)
   print('New file created!')
-  print('View it by entering `ds9 {}/{}` in a fresh terminal.'.format(\
+  print('View it by entering `ds9 {}{}` in a fresh terminal.'.format(\
                                                             path, \
-                                                            rootname'_img.fits'))
+                                                            rootname+'_img.fits'))
 
 def make_fits(array, filename, path=''):
     """ This function will put your array in a FITS file that you can open in
